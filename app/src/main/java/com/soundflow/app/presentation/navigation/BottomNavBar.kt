@@ -1,5 +1,10 @@
 package com.soundflow.app.presentation.navigation
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.LibraryMusic
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -8,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -26,16 +32,16 @@ data class BottomNavItem(
 fun BottomNavBar(navController: NavHostController) {
     val items = listOf(
         BottomNavItem(Screen.Home, "Home") {
-            Icon(androidx.compose.material.icons.Icons.Filled.Home, contentDescription = "Home")
+            Icon(Icons.Filled.Home, contentDescription = "Home")
         },
         BottomNavItem(Screen.Search, "Search") {
-            Icon(androidx.compose.material.icons.Icons.Filled.Search, contentDescription = "Search")
+            Icon(Icons.Filled.Search, contentDescription = "Search")
         },
         BottomNavItem(Screen.Library, "Library") {
-            Icon(androidx.compose.material.icons.Icons.Filled.LibraryMusic, contentDescription = "Library")
+            Icon(Icons.Filled.LibraryMusic, contentDescription = "Library")
         },
         BottomNavItem(Screen.Settings, "Settings") {
-            Icon(androidx.compose.material.icons.Icons.Filled.Settings, contentDescription = "Settings")
+            Icon(Icons.Filled.Settings, contentDescription = "Settings")
         }
     )
 
@@ -44,7 +50,7 @@ fun BottomNavBar(navController: NavHostController) {
 
     NavigationBar(
         containerColor = Surface,
-        tonalElevation = androidx.compose.ui.unit.dp(8)
+        tonalElevation = 8.dp
     ) {
         items.forEach { item ->
             val selected = currentDestination?.hierarchy?.any { it.route == item.screen.route } == true

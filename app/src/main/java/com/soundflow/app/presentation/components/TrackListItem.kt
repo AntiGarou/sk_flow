@@ -10,6 +10,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -75,8 +79,8 @@ fun TrackListItem(
         if (onFavorite != null) {
             IconButton(onClick = onFavorite) {
                 Icon(
-                    imageVector = if (track.isFavorite) androidx.compose.material.icons.Icons.Filled.Favorite
-                    else androidx.compose.material.icons.Icons.Filled.FavoriteBorder,
+                    imageVector = if (track.isFavorite) Icons.Filled.Favorite
+                    else Icons.Filled.FavoriteBorder,
                     contentDescription = "Favorite",
                     tint = if (track.isFavorite) Primary else OnSurfaceVariant,
                     modifier = Modifier.size(20.dp)
@@ -86,7 +90,7 @@ fun TrackListItem(
 
         IconButton(onClick = onMore) {
             Icon(
-                imageVector = androidx.compose.material.icons.Icons.Filled.MoreVert,
+                imageVector = Icons.Filled.MoreVert,
                 contentDescription = "More",
                 tint = OnSurfaceVariant,
                 modifier = Modifier.size(20.dp)

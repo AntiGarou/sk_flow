@@ -15,6 +15,17 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.PauseCircle
+import androidx.compose.material.icons.filled.PlayCircle
+import androidx.compose.material.icons.filled.Repeat
+import androidx.compose.material.icons.filled.RepeatOne
+import androidx.compose.material.icons.filled.Shuffle
+import androidx.compose.material.icons.filled.SkipNext
+import androidx.compose.material.icons.filled.SkipPrevious
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -63,7 +74,7 @@ fun FullScreenPlayer(
     ) {
         IconButton(onClick = onDismiss, modifier = Modifier.align(Alignment.Start)) {
             Icon(
-                imageVector = androidx.compose.material.icons.Icons.Filled.KeyboardArrowDown,
+                imageVector = Icons.Filled.KeyboardArrowDown,
                 contentDescription = "Minimize",
                 tint = OnSurface,
                 modifier = Modifier.size(32.dp)
@@ -107,8 +118,8 @@ fun FullScreenPlayer(
 
             IconButton(onClick = onFavoriteToggle) {
                 Icon(
-                    imageVector = if (track.isFavorite) androidx.compose.material.icons.Icons.Filled.Favorite
-                    else androidx.compose.material.icons.Icons.Filled.FavoriteBorder,
+                    imageVector = if (track.isFavorite) Icons.Filled.Favorite
+                    else Icons.Filled.FavoriteBorder,
                     contentDescription = "Favorite",
                     tint = if (track.isFavorite) Primary else OnSurfaceVariant
                 )
@@ -160,7 +171,7 @@ fun FullScreenPlayer(
         ) {
             IconButton(onClick = onShuffleToggle) {
                 Icon(
-                    imageVector = androidx.compose.material.icons.Icons.Filled.Shuffle,
+                    imageVector = Icons.Filled.Shuffle,
                     contentDescription = "Shuffle",
                     tint = if (playbackState.shuffleEnabled) Primary else OnSurfaceVariant
                 )
@@ -168,7 +179,7 @@ fun FullScreenPlayer(
 
             IconButton(onClick = onPrevious) {
                 Icon(
-                    imageVector = androidx.compose.material.icons.Icons.Filled.SkipPrevious,
+                    imageVector = Icons.Filled.SkipPrevious,
                     contentDescription = "Previous",
                     tint = MaterialTheme.colorScheme.onBackground,
                     modifier = Modifier.size(36.dp)
@@ -178,9 +189,9 @@ fun FullScreenPlayer(
             IconButton(onClick = onPlayPause) {
                 Icon(
                     imageVector = if (playbackState.isPlaying)
-                        androidx.compose.material.icons.Icons.Filled.PauseCircle
+                        Icons.Filled.PauseCircle
                     else
-                        androidx.compose.material.icons.Icons.Filled.PlayCircle,
+                        Icons.Filled.PlayCircle,
                     contentDescription = if (playbackState.isPlaying) "Pause" else "Play",
                     tint = MaterialTheme.colorScheme.onBackground,
                     modifier = Modifier.size(64.dp)
@@ -189,7 +200,7 @@ fun FullScreenPlayer(
 
             IconButton(onClick = onNext) {
                 Icon(
-                    imageVector = androidx.compose.material.icons.Icons.Filled.SkipNext,
+                    imageVector = Icons.Filled.SkipNext,
                     contentDescription = "Next",
                     tint = MaterialTheme.colorScheme.onBackground,
                     modifier = Modifier.size(36.dp)
@@ -199,8 +210,8 @@ fun FullScreenPlayer(
             IconButton(onClick = onRepeatToggle) {
                 Icon(
                     imageVector = when (playbackState.repeatMode) {
-                        RepeatMode.ONE -> androidx.compose.material.icons.Icons.Filled.RepeatOne
-                        else -> androidx.compose.material.icons.Icons.Filled.Repeat
+                        RepeatMode.ONE -> Icons.Filled.RepeatOne
+                        else -> Icons.Filled.Repeat
                     },
                     contentDescription = "Repeat",
                     tint = if (playbackState.repeatMode != RepeatMode.OFF) Primary else OnSurfaceVariant
