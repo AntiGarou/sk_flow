@@ -42,7 +42,33 @@ class MainActivity : ComponentActivity() {
                 var showFullScreenPlayer by remember { mutableStateOf(false) }
 
                 Box(modifier = Modifier.fillMaxSize()) {
-                    if (showFullScreenPlayer && playbackState.currentTrack != null) {
+                    Scaffold { innerPadding ->
+                        Box(modifier = Modifier.fillMaxSize()) {
+                            NavigationGraph(
+                                navController = navController,
+                                onTrackClick = { track: Track ->
+                                    playerViewModel.playTrack(track)
+                                }
+                            )
+
+                            if (playbackState.currentTrack != null) {
+                                MiniPlayer(
+                                    playbackState = playbackState,
+                                    onPlayPause = playerViewModel::playPause,
+                                    onClick = { showFullScreenPlayer = true },
+                                    modifier = Modifier
+                                        .align(androidx.compose.ui.Alignment.BottomCenter)
+                                        .padding(bottom = 80.dp)
+                                )
+                            }
+                        }
+                    }
+
+                    AnimatedVisibility(
+                        visible = showFullScreenPlayer && playbackState.currentTrack != null,
+                        enter = slideInVertically(initialOffsetY = { it }),
+                        exit = slideOutVertically(targetOffsetY = { it })
+                    ) {
                         FullScreenPlayer(
                             playbackState = playbackState,
                             onPlayPause = playerViewModel::playPause,
@@ -56,28 +82,6 @@ class MainActivity : ComponentActivity() {
                             },
                             onDismiss = { showFullScreenPlayer = false }
                         )
-                    } else {
-                        Scaffold { innerPadding ->
-                            Box(modifier = Modifier.fillMaxSize()) {
-                                NavigationGraph(
-                                    navController = navController,
-                                    onTrackClick = { track: Track ->
-                                        playerViewModel.playTrack(track)
-                                    }
-                                )
-
-                                if (playbackState.currentTrack != null) {
-                                    MiniPlayer(
-                                        playbackState = playbackState,
-                                        onPlayPause = playerViewModel::playPause,
-                                        onClick = { showFullScreenPlayer = true },
-                                        modifier = Modifier
-                                            .align(androidx.compose.ui.Alignment.BottomCenter)
-                                            .padding(bottom = 80.dp)
-                                    )
-                                }
-                            }
-                        }
                     }
                 }
             }
