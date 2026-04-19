@@ -8,9 +8,12 @@ import androidx.media3.exoplayer.ExoPlayer
 import com.soundflow.app.data.local.database.dao.TrackDao
 import com.soundflow.app.data.mapper.toDomain
 import com.soundflow.app.data.mapper.toEntity
+import com.soundflow.app.data.remote.api.SoundCloudApi
+import com.soundflow.app.data.remote.soundcloud.SoundCloudClientIdProvider
 import com.soundflow.app.domain.model.PlaybackState
 import com.soundflow.app.domain.model.RepeatMode
 import com.soundflow.app.domain.model.Track
+import com.soundflow.app.domain.model.TrackSource
 import com.soundflow.app.domain.repository.PlayerRepository
 import com.soundflow.app.service.PlaybackService
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -28,7 +31,9 @@ import javax.inject.Singleton
 class PlayerRepositoryImpl @Inject constructor(
     @ApplicationContext private val context: Context,
     private val exoPlayer: ExoPlayer,
-    private val trackDao: TrackDao
+    private val trackDao: TrackDao,
+    private val soundCloudApi: SoundCloudApi,
+    private val soundCloudClientIdProvider: SoundCloudClientIdProvider
 ) : PlayerRepository {
 
     private val _playbackState = MutableStateFlow(PlaybackState())
@@ -152,11 +157,28 @@ class PlayerRepositoryImpl @Inject constructor(
         _playbackState.value = _playbackState.value.copy(repeatMode = mode)
     }
 
-    private fun playMediaItem(track: Track) {
-        val streamUrl = track.streamUrl ?: track.localPath ?: return
+    private suspend fun playMediaItem(track: Track) {
+        var streamUrl = track.streamUrl ?: track.localPath ?: return
+
+        if (track.source == TrackSource.SOUNDCLOUD && streamUrl.contains("api-v2.soundcloud.com")) {
+            streamUrl = resolveSoundCloudUrl(streamUrl) ?: streamUrl
+        }
+
         val mediaItem = MediaItem.fromUri(streamUrl)
         exoPlayer.setMediaItem(mediaItem)
         exoPlayer.prepare()
         exoPlayer.play()
+    }
+
+    private suspend fun resolveSoundCloudUrl(transcodingUrl: String): String? {
+        return try {
+            val clientId = soundCloudClientIdProvider.getClientId() ?: return null
+            val separator = if (transcodingUrl.contains("?")) "&" else "?"
+            val urlWithClientId = "$transcodingUrl${separator}client_id=$clientId"
+            val response = soundCloudApi.getStreamUrl(urlWithClientId)
+            response.url.ifBlank { null }
+        } catch (_: Exception) {
+            null
+        }
     }
 }
