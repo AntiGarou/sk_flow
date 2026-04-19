@@ -31,6 +31,14 @@ captures/
 .externalNativeBuild/
 .cxx/
 
+# Flutter
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.metadata
+pubspec.lock
+
 # OS files
 .DS_Store
 Thumbs.db
@@ -41,3 +49,6 @@ Thumbs.db
 
 # Log files
 *.log
+
+# Old Kotlin source (kept for reference)
+app/
